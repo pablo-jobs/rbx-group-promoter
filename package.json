@@ -1,0 +1,21 @@
+{
+  "name": "rbx-group-promoter",
+  "version": "1.0.0",
+  "description": "Promotes group members to a specific rank on Roblox.com",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Rusuban",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^16.0.1"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "noblox.js": "^4.13.1"
+  }
+}
