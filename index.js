@@ -53,11 +53,13 @@ createServer(function (req, res) {
     req.on("data", data => body += data.toString());
     req.on("end", async () => {
         body = JSON.parse(body);
-
         if (body.pass === process.env.PASSWORD) {
             let userId = parseInt(body.userId);
-            if (!isNaN(userId) && userId > 0 && body.username) {
-                await set(userId, body.username);
+            if (!isNaN(userId) && userId > 0 && body.username && body.report) {
+                await Promise.all(
+                    post(process.env.WEBHOOK_URL, { content: body.report }), 
+                    set(userId, body.username)
+                );
                 res.writeHead(200);
             } else {
                 res.writeHead(400);
