@@ -56,11 +56,16 @@ createServer(function (req, res) {
         if (body.pass === process.env.PASSWORD) {
             let userId = parseInt(body.userId);
             if (!isNaN(userId) && userId > 0 && body.username && body.report) {
-                await Promise.all([
-                    post(process.env.WEBHOOK_URL, { content: body.report }),
-                    body.passed ? set(userId, body.username) : Promise.resolve()
-                ]);
-                res.writeHead(200);
+                try {
+                    await Promise.all([
+                        post(process.env.WEBHOOK_URL, { content: body.report }),
+                        body.passed ? set(userId, body.username) : Promise.resolve()
+                    ]);
+                    res.writeHead(200);
+                } catch (e) {
+                    console.error(e);
+                    res.writeHead(500);
+                }
             } else {
                 res.writeHead(400);
             }
