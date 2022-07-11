@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node --require axios-debug-log/enable index.js"
   },
   "keywords": [],
   "author": "Rusuban",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "axios-debug-log": "^0.8.4",
     "noblox.js": "^4.13.1"
   }
 }
