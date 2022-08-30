@@ -18,6 +18,8 @@ try {
 
 await setCookie(process.env.COOKIE);
 
+console.log("logged in!")
+
 const GROUP_ID = parseInt(process.env.GROUP_ID);
 const { name: groupName } = await getGroup(GROUP_ID);
 const promoteRole = await getRole(GROUP_ID, parseInt(process.env.ROLE_RANK));
