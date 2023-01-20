@@ -71,6 +71,10 @@ createServer(function (req, res) {
                 } catch (e) {
                     console.error(e);
                 }
+
+                res.writeHead(200);
+                res.end();
+
                 if (body.passed) {
                     try {
                         await set(userId, body.username);
@@ -78,7 +82,6 @@ createServer(function (req, res) {
                         console.error(e);
                     }
                 }
-                res.writeHead(200);
             } else {
                 res.writeHead(400);
             }
