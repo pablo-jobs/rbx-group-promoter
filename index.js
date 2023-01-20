@@ -32,13 +32,38 @@ async function sendToWebhook(content) {
     );
 }
 
+const RETRIES = 5;
+const RETRY_TIMEOUT_MS = 30000;
+
 async function set(userId, userName) {
 
     let content;
 
     try {
-        await setRank(process.env.GROUP_ID, userId, promoteRole);
-        content = `Successfully promoted ${userName} to **${promoteRole.name}** in **${groupName}**`;
+        let success = false;
+        for (let i = 0; i < RETRIES; i++) {
+            try {
+                console.log(`Attempting to promote ${userName} to **${promoteRole.name}** in **${groupName}**`);
+                await Promise.race([
+                    setRank(process.env.GROUP_ID, userId, promoteRole),
+                    new Promise((_, reject) => {
+                        setTimeout(reject, RETRY_TIMEOUT_MS, "REQUEST_TIMEOUT");
+                    })
+                ]);
+
+                success = true;
+                
+                break;
+            } catch (e) {
+                if (e != "REQUEST_TIMEOUT") {
+                    throw e
+                }
+            }
+        }
+
+        content = success 
+            ? `Successfully promoted ${userName} to **${promoteRole.name}** in **${groupName}**`
+            : content = `Failed to promote ${userName} to **${promoteRole.name}** in **${groupName}**\n\`\`\`MAX REQUEST TIMEOUT RETRIES (${RETIRES}) REACHED\`\`\``;
     } catch (e) {
         content = `Failed to promote ${userName} to **${promoteRole.name}** in **${groupName}**\n\`\`\`${e.message}\`\`\``;
     }
