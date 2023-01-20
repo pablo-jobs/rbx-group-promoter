@@ -63,7 +63,7 @@ async function set(userId, userName) {
 
         content = success 
             ? `Successfully promoted ${userName} to **${promoteRole.name}** in **${groupName}**`
-            : content = `Failed to promote ${userName} to **${promoteRole.name}** in **${groupName}**\n\`\`\`MAX REQUEST TIMEOUT RETRIES (${RETIRES}) REACHED\`\`\``;
+            : content = `Failed to promote ${userName} to **${promoteRole.name}** in **${groupName}**\n\`\`\`MAX REQUEST TIMEOUT RETRIES (${RETRIES}) REACHED\`\`\``;
     } catch (e) {
         content = `Failed to promote ${userName} to **${promoteRole.name}** in **${groupName}**\n\`\`\`${e.message}\`\`\``;
     }
