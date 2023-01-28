@@ -35,7 +35,7 @@ async function sendToWebhook(content) {
 const RETRIES = 5;
 const RETRY_TIMEOUT_MS = 30000;
 
-async function set(userId, userName) {
+async function set(userId, userName, relog) {
 
     let content;
 
@@ -56,7 +56,14 @@ async function set(userId, userName) {
                 break;
             } catch (e) {
                 if (e != "REQUEST_TIMEOUT") {
-                    throw e
+                    if (relog) {
+                        console.log(`Request timed out for promoting ${userName} to **${promoteRole.name}** in **${groupName}** so relogging`);
+                        await setCookie(process.env.COOKIE)
+                        console.log("logged in!")
+                        await set(userId, userName, false)
+                    } else {
+                        throw e
+                    }
                 }
             }
         }
@@ -102,7 +109,7 @@ createServer(function (req, res) {
 
                 if (body.passed) {
                     try {
-                        await set(userId, body.username);
+                        await set(userId, body.username, true);
                     } catch (e) {
                         console.error(e);
                     }
