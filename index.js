@@ -56,14 +56,15 @@ async function set(userId, userName, relog) {
                 break;
             } catch (e) {
                 if (e != "REQUEST_TIMEOUT") {
-                    if (relog) {
-                        console.log(`Request timed out for promoting ${userName} to **${promoteRole.name}** in **${groupName}** so relogging`);
-                        await setCookie(process.env.COOKIE)
-                        console.log("logged in!")
-                        await set(userId, userName, false)
-                    } else {
-                        throw e
-                    }
+                    throw e
+                }
+
+                if (relog) {
+                    console.log(`Request timed out for promoting ${userName} to **${promoteRole.name}** in **${groupName}** so relogging`);
+                    await setCookie(process.env.COOKIE)
+                    console.log("logged in!")
+                    await set(userId, userName, false)
+                    return
                 }
             }
         }
